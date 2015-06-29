@@ -8,36 +8,34 @@ import com.google.gson.annotations.SerializedName;
 public class Photos {
 
 
-    public static class Photo {
+    @SerializedName("id")
+    private long id;
 
-        @SerializedName("id")
-        private long id;
+    @SerializedName("details")
+    private Details details;
 
-        @SerializedName("details")
-        private Details details;
+    @SerializedName("images")
+    private Images images;
 
-        @SerializedName("images")
-        private Images images;
+    @SerializedName("updated_at")
+    private String lastUpdate;
 
-        @SerializedName("updated_at")
-        private String lastUpdate;
-
-        public long getId() {
-            return id;
-        }
-
-        public Details getDetails() {
-            return details;
-        }
-
-        public Images getImages() {
-            return images;
-        }
-
-        public String getLastUpdate() {
-            return lastUpdate;
-        }
+    public long getId() {
+        return id;
     }
+
+    public Details getDetails() {
+        return details;
+    }
+
+    public Images getImages() {
+        return images;
+    }
+
+    public String getLastUpdate() {
+        return lastUpdate;
+    }
+
 
     public static class Details {
 

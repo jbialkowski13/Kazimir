@@ -13,12 +13,24 @@ public final class ServiceCaller {
     private static final String ACTION_EXTRA_KEY = "action";
 
     enum Action {
-        DOWNLOAD_STREETS
+        DOWNLOAD_STREETS, GET_STREETS, REFRESH_STREETS
     }
 
     public static void downloadStreets(@NonNull Context context) {
         Intent serviceIntent = getServiceIntent(context);
         serviceIntent.putExtra(ACTION_EXTRA_KEY, Action.DOWNLOAD_STREETS.name());
+        context.startService(serviceIntent);
+    }
+
+    public static void getStreets(@NonNull Context context) {
+        Intent serviceIntent = getServiceIntent(context);
+        serviceIntent.putExtra(ACTION_EXTRA_KEY, Action.GET_STREETS.name());
+        context.startService(serviceIntent);
+    }
+
+    public static void refreshStreets(@NonNull Context context) {
+        Intent serviceIntent = getServiceIntent(context);
+        serviceIntent.putExtra(ACTION_EXTRA_KEY,Action.REFRESH_STREETS.name());
         context.startService(serviceIntent);
     }
 

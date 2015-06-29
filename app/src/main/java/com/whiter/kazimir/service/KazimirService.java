@@ -6,11 +6,12 @@ import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.google.gson.Gson;
 import com.squareup.otto.Bus;
 import com.whiter.kazimir.App;
 import com.whiter.kazimir.api.KazimirApi;
 import com.whiter.kazimir.event.DownloadEvent;
+import com.whiter.kazimir.event.RefreshEvent;
+import com.whiter.kazimir.event.StreetsEvent;
 import com.whiter.kazimir.model.Street;
 
 import java.util.List;
@@ -18,10 +19,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import retrofit.Callback;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.converter.GsonConverter;
 
 /**
  * Created by whiter
@@ -34,10 +33,19 @@ public class KazimirService extends Service {
     @Inject
     Bus bus;
 
+    List<Street> streets;
+
     @Override
     public void onCreate() {
         super.onCreate();
         App.component().inject(this);
+        bus.register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        bus.unregister(this);
+        super.onDestroy();
     }
 
     @Nullable
@@ -60,6 +68,12 @@ public class KazimirService extends Service {
             case DOWNLOAD_STREETS:
                 downloadStreets();
                 break;
+            case GET_STREETS:
+                bus.post(new StreetsEvent(streets));
+                break;
+            case REFRESH_STREETS:
+                refreshStreets();
+                break;
         }
 
     }
@@ -68,6 +82,7 @@ public class KazimirService extends Service {
         kazimirApi.getStreets(new Callback<List<Street>>() {
             @Override
             public void success(List<Street> streets, Response response) {
+                KazimirService.this.streets = streets;
                 bus.post(new DownloadEvent(true));
             }
 
@@ -79,4 +94,19 @@ public class KazimirService extends Service {
         });
     }
 
+
+    private void refreshStreets() {
+        kazimirApi.getStreets(new Callback<List<Street>>() {
+            @Override
+            public void success(List<Street> streets, Response response) {
+                KazimirService.this.streets = streets;
+                bus.post(new RefreshEvent(streets, true));
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                bus.post(new RefreshEvent(null, false));
+            }
+        });
+    }
 }

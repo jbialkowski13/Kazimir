@@ -21,6 +21,22 @@ public class Place {
     @SerializedName("photos")
     private List<Photos> photos;
 
+    public long getId() {
+        return id;
+    }
+
+    public String getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public Details getDetails() {
+        return details;
+    }
+
+    public List<Photos> getPhotos() {
+        return photos;
+    }
+
     public static class Details {
         @SerializedName("en")
         private Detail detailEn;
