@@ -23,6 +23,7 @@ import com.whiter.kazimir.event.RefreshEvent;
 import com.whiter.kazimir.event.StreetsEvent;
 import com.whiter.kazimir.model.Street;
 import com.whiter.kazimir.service.ServiceCaller;
+import com.whiter.kazimir.ui.decorator.SimpleDividerItemDecoration;
 
 import java.util.List;
 
@@ -65,6 +66,7 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
         ab.setDisplayHomeAsUpEnabled(true);
         setupDrawerContent();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         streetsAdapter = new StreetsAdapter(this);
         recyclerView.setAdapter(streetsAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
