@@ -21,6 +21,7 @@
         </activity>
 
         <activity android:name=".ui.activity.StreetsActivity" />
+        <activity android:name=".ui.activity.PlaceActivity" />
 
         <service android:name=".service.KazimirService" />
     </application>

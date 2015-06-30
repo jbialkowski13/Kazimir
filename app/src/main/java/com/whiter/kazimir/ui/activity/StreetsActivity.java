@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -24,6 +25,7 @@ import com.whiter.kazimir.event.StreetsEvent;
 import com.whiter.kazimir.model.Street;
 import com.whiter.kazimir.service.ServiceCaller;
 import com.whiter.kazimir.ui.decorator.SimpleDividerItemDecoration;
+import com.whiter.kazimir.ui.view.RecyclerItemClickListener;
 
 import java.util.List;
 
@@ -69,6 +71,12 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(this));
         streetsAdapter = new StreetsAdapter(this);
         recyclerView.setAdapter(streetsAdapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Street street = streetsAdapter.getStreet(position);
+            }
+        }));
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
@@ -145,6 +153,4 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
                     }
                 });
     }
-
-
 }

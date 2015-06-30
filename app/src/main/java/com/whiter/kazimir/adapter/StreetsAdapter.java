@@ -39,6 +39,10 @@ public class StreetsAdapter extends RecyclerView.Adapter<StreetsAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    public Street getStreet(int position){
+        return streets.get(position);
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.street_row, parent, false);
