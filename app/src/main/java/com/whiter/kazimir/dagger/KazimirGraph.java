@@ -1,7 +1,7 @@
 package com.whiter.kazimir.dagger;
 
 import com.whiter.kazimir.service.KazimirService;
-import com.whiter.kazimir.ui.activity.PlacesActivity;
+import com.whiter.kazimir.ui.activity.StreetsActivity;
 import com.whiter.kazimir.ui.activity.SplashActivity;
 
 /**
@@ -10,5 +10,5 @@ import com.whiter.kazimir.ui.activity.SplashActivity;
 public interface KazimirGraph {
     void inject(KazimirService kazimirService);
     void inject(SplashActivity splashActivity);
-    void inject(PlacesActivity placesActivity);
+    void inject(StreetsActivity streetsActivity);
 }

@@ -31,9 +31,9 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class PlacesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
-    private static final String TAG = PlacesActivity.class.getSimpleName();
+    private static final String TAG = StreetsActivity.class.getSimpleName();
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
@@ -56,7 +56,7 @@ public class PlacesActivity extends AppCompatActivity implements SwipeRefreshLay
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.streets_activity);
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
         App.component().inject(this);

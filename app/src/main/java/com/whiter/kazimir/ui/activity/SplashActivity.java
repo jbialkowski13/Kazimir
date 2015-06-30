@@ -3,7 +3,6 @@ package com.whiter.kazimir.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -49,7 +48,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void startMainActivity() {
-        startActivity(new Intent(this, PlacesActivity.class));
+        startActivity(new Intent(this, StreetsActivity.class));
         finish();
     }
 }

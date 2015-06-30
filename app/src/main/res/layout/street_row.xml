@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="220dp">
 
-    <ImageView
+    <com.whiter.kazimir.ui.view.SplitImageView
         android:id="@+id/street_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
-        tools:src="@drawable/foto_placnowy"/>
+        app:whiter_leftImage="@drawable/foto_placnowy"
+        app:whiter_rightImage="@drawable/foto_brzozowa"/>
 
     <View
         android:layout_width="match_parent"
