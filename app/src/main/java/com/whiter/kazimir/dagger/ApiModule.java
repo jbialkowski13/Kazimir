@@ -1,7 +1,5 @@
 package com.whiter.kazimir.dagger;
 
-import android.app.Application;
-
 import com.squareup.okhttp.OkHttpClient;
 
 import javax.inject.Singleton;
@@ -23,19 +21,19 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    Client provideClient(OkHttpClient okHttpClient){
+    Client provideClient(OkHttpClient okHttpClient) {
         return new OkClient(okHttpClient);
     }
 
     @Provides
     @Singleton
-    OkHttpClient provideOkHttpClient(){
+    OkHttpClient provideOkHttpClient() {
         return new OkHttpClient();
     }
 
     @Provides
     @Singleton
-    RestAdapter provideRestAdapter(Endpoint endpoint, Client client){
+    RestAdapter provideRestAdapter(Endpoint endpoint, Client client) {
         return new RestAdapter.Builder()
                 .setClient(client)
                 .setEndpoint(endpoint)

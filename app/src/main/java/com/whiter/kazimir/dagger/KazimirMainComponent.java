@@ -13,7 +13,7 @@ import static com.squareup.otto.ThreadEnforcer.ANY;
  * Created by whiter
  */
 @Singleton
-@Component(modules = {MainModule.class, ReleaseApiModule.class, EventBusModule.class})
+@Component(modules = {MainModule.class, ReleaseApiModule.class, EventBusModule.class, PresentersModule.class, UtilsModule.class})
 public interface KazimirMainComponent extends KazimirGraph {
 
     final class Initializer {

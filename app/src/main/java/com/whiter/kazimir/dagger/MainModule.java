@@ -1,5 +1,6 @@
 package com.whiter.kazimir.dagger;
 
+import android.content.Context;
 import android.content.res.Resources;
 
 import com.whiter.kazimir.App;
@@ -23,13 +24,19 @@ public class MainModule {
 
     @Provides
     @Singleton
-    public App provideApplication(){
+    public App provideApplication() {
         return app;
     }
 
     @Provides
     @Singleton
-    public Resources provideResources(){
+    public Resources provideResources() {
         return app.getResources();
+    }
+
+    @Provides
+    @Singleton
+    Context provideApplicationContext() {
+        return app.getApplicationContext();
     }
 }

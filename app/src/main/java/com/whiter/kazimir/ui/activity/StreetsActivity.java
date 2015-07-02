@@ -11,22 +11,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.squareup.otto.Bus;
-import com.squareup.otto.Subscribe;
 import com.whiter.kazimir.App;
 import com.whiter.kazimir.R;
 import com.whiter.kazimir.adapter.StreetsAdapter;
-import com.whiter.kazimir.event.RefreshEvent;
-import com.whiter.kazimir.event.StreetsEvent;
 import com.whiter.kazimir.model.Street;
-import com.whiter.kazimir.service.ServiceCaller;
+import com.whiter.kazimir.presenter.StreetsPresenter;
 import com.whiter.kazimir.ui.decorator.SimpleDividerItemDecoration;
 import com.whiter.kazimir.ui.view.RecyclerItemClickListener;
+import com.whiter.kazimir.utils.Intents;
 
 import java.util.List;
 
@@ -35,7 +31,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, StreetsPresenter.Contract {
 
     private static final String TAG = StreetsActivity.class.getSimpleName();
 
@@ -50,12 +46,13 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
     @InjectView(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
 
-    @Inject
-    Bus bus;
-
-    List<Street> streets;
-
     private StreetsAdapter streetsAdapter;
+
+    @Inject
+    StreetsPresenter streetsPresenter;
+
+    @Inject
+    Intents intents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,31 +73,12 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
             @Override
             public void onItemClick(View view, int position) {
                 Street street = streetsAdapter.getStreet(position);
-                startPlaceActivity(street);
+                intents.startPlaceActivity(StreetsActivity.this,street);
             }
         }));
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        bus.register(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (streets == null) {
-            ServiceCaller.getStreets(this);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        bus.unregister(this);
-        super.onPause();
-    }
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.sample_actions, menu);
@@ -117,30 +95,30 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
         return super.onOptionsItemSelected(item);
     }
 
-    @Subscribe
-    public void onStreetsEvent(StreetsEvent streetsEvent) {
-        setStreets(streetsEvent.getStreets());
+    @Override
+    protected void onResume() {
+        super.onResume();
+        streetsPresenter.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        streetsPresenter.onPause();
     }
 
     @Override
     public void onRefresh() {
-        ServiceCaller.refreshStreets(this);
+        streetsPresenter.refresh();
     }
 
-    @Subscribe
-    public void onRefreshEvent(RefreshEvent refreshEvent) {
-        boolean success = refreshEvent.isSuccess();
-        if (success) {
-            setStreets(refreshEvent.getStreets());
-        }
-        swipeRefreshLayout.setRefreshing(false);
+    @Override
+    public void setRefreshing(boolean refreshing) {
+        swipeRefreshLayout.setRefreshing(refreshing);
     }
 
-    private void setStreets(List<Street> streets) {
-        if (streets == null) {
-            Log.w(TAG, "streets are null");
-            return;
-        }
+    @Override
+    public void setStreets(List<Street> streets) {
         streetsAdapter.swapStreets(streets);
     }
 
@@ -154,11 +132,5 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
                         return true;
                     }
                 });
-    }
-
-    private void startPlaceActivity(Street street) {
-        Intent intent = new Intent(this, PlaceActivity.class);
-        intent.putExtra(PlaceActivity.STREET_TAG, street);
-        startActivity(intent);
     }
 }
