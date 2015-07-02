@@ -1,5 +1,6 @@
 package com.whiter.kazimir.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -75,6 +76,7 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
             @Override
             public void onItemClick(View view, int position) {
                 Street street = streetsAdapter.getStreet(position);
+                startPlaceActivity(street);
             }
         }));
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -152,5 +154,11 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
                         return true;
                     }
                 });
+    }
+
+    private void startPlaceActivity(Street street) {
+        Intent intent = new Intent(this, PlaceActivity.class);
+        intent.putExtra(PlaceActivity.STREET_TAG, street);
+        startActivity(intent);
     }
 }
