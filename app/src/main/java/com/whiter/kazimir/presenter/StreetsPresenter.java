@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+import com.whiter.kazimir.App;
 import com.whiter.kazimir.event.RefreshEvent;
 import com.whiter.kazimir.event.StreetsEvent;
 import com.whiter.kazimir.model.Street;
@@ -20,18 +21,20 @@ public class StreetsPresenter extends BasePresenter<StreetsPresenter.Contract> {
 
     public interface Contract {
         void setStreets(List<Street> streets);
+
         void setRefreshing(boolean refreshing);
     }
 
     private List<Street> streets;
 
-    private Bus bus;
-    private Context context;
+    @Inject
+    Bus bus;
+    @Inject
+    Context context;
 
 
-    public StreetsPresenter(Bus bus, Context context) {
-        this.bus = bus;
-        this.context = context;
+    public StreetsPresenter() {
+        App.component().inject(this);
     }
 
     @Override

@@ -16,4 +16,24 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="KazimirButton">
+        <item name="android:textAppearance">@android:style/TextAppearance.Medium</item>
+        <item name="android:minWidth">94dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="KazimirButton.Red">
+        <item name="android:background">@color/dark_red</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="KazimirButton.Yellow">
+        <item name="android:background">@color/accent_color</item>
+        <item name="android:textColor">@color/primary_color_dark</item>
+    </style>
+
 </resources>

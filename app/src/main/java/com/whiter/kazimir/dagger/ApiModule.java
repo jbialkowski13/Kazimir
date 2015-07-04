@@ -2,6 +2,8 @@ package com.whiter.kazimir.dagger;
 
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -28,7 +30,11 @@ public class ApiModule {
     @Provides
     @Singleton
     OkHttpClient provideOkHttpClient() {
-        return new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.setConnectTimeout(1, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
+        return okHttpClient;
     }
 
     @Provides

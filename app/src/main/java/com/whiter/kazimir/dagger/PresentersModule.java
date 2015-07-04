@@ -1,8 +1,6 @@
 package com.whiter.kazimir.dagger;
 
-import android.content.Context;
-
-import com.squareup.otto.Bus;
+import com.whiter.kazimir.presenter.SplashPresenter;
 import com.whiter.kazimir.presenter.StreetsPresenter;
 
 import javax.inject.Singleton;
@@ -18,7 +16,13 @@ public class PresentersModule {
 
     @Provides
     @Singleton
-    StreetsPresenter provideStreetsPresenter(Bus bus, Context context) {
-        return new StreetsPresenter(bus, context);
+    StreetsPresenter provideStreetsPresenter() {
+        return new StreetsPresenter();
+    }
+
+    @Provides
+    @Singleton
+    SplashPresenter provideSplashPresenter() {
+        return new SplashPresenter();
     }
 }
