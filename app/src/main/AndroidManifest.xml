@@ -23,6 +23,7 @@
 
         <activity android:name=".ui.activity.StreetsActivity" />
         <activity android:name=".ui.activity.PlaceActivity" />
+        <activity android:name=".ui.activity.PlaceListActivity" />
 
         <service android:name=".service.KazimirService" />
     </application>

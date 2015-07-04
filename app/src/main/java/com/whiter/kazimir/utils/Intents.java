@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.whiter.kazimir.model.Street;
 import com.whiter.kazimir.ui.activity.PlaceActivity;
+import com.whiter.kazimir.ui.activity.PlaceListActivity;
 import com.whiter.kazimir.ui.activity.StreetsActivity;
 
 /**
@@ -18,8 +19,8 @@ public class Intents {
 
     }
 
-    public void startPlaceActivity(Activity activity, Street street) {
-        Intent intent = new Intent(activity, PlaceActivity.class);
+    public void startPlaceListActivity(Activity activity, Street street) {
+        Intent intent = new Intent(activity, PlaceListActivity.class);
         intent.putExtra(STREET_TAG, street);
         activity.startActivity(intent);
     }
@@ -28,7 +29,7 @@ public class Intents {
         return intent.getParcelableExtra(STREET_TAG);
     }
 
-    public void startStreetsActiity(Activity activity){
+    public void startStreetsActivity(Activity activity){
         Intent intent = new Intent(activity, StreetsActivity.class);
         activity.startActivity(intent);
         activity.finish();

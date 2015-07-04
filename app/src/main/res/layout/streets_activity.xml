@@ -8,7 +8,7 @@
     tools:context=".MainActivity">
 
 
-    <include layout="@layout/activity_main_content"/>
+    <include layout="@layout/streets_activity_content"/>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

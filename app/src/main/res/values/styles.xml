@@ -36,4 +36,14 @@
         <item name="android:textColor">@color/primary_color_dark</item>
     </style>
 
+    <style name="KazimirButton.Primary">
+        <item name="android:background">@color/primary_color</item>
+        <item name="android:textColor">@color/text_icon_color</item>
+    </style>
+
+    <style name="KazimirButton.Flat">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/primary_text_color</item>
+    </style>
+
 </resources>

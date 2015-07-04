@@ -4,6 +4,7 @@ import com.whiter.kazimir.presenter.SplashPresenter;
 import com.whiter.kazimir.presenter.StreetsPresenter;
 import com.whiter.kazimir.service.KazimirService;
 import com.whiter.kazimir.ui.activity.PlaceActivity;
+import com.whiter.kazimir.ui.activity.PlaceListActivity;
 import com.whiter.kazimir.ui.activity.SplashActivity;
 import com.whiter.kazimir.ui.activity.StreetsActivity;
 
@@ -22,4 +23,6 @@ public interface KazimirGraph {
     void inject(StreetsPresenter streetsPresenter);
 
     void inject(SplashPresenter splashPresenter);
+
+    void inject(PlaceListActivity placeListActivity);
 }

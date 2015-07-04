@@ -37,7 +37,7 @@ public class PlaceActivity extends AppCompatActivity {
     @InjectView(R.id.backdrop)
     ImageView backdrop;
 
-    @InjectView(R.id.viewpager)
+    @InjectView(R.id.place_list_view_pager)
     ViewPager viewPager;
 
     @Override
