@@ -5,6 +5,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.whiter.kazimir.App;
 import com.whiter.kazimir.R;
@@ -24,7 +25,7 @@ import butterknife.InjectView;
 /**
  * Created by whiter
  */
-public class PlaceListActivity extends AppCompatActivity {
+public class PlaceListActivity extends AppCompatActivity implements PlaceListFragment.Contract {
 
     @Inject
     Intents intents;
@@ -44,6 +45,14 @@ public class PlaceListActivity extends AppCompatActivity {
         setContentView(R.layout.place_list_activity);
         ButterKnife.inject(this);
         App.component().inject(this);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         Street street = intents.getStreet(getIntent());
         toolbar.setTitle(street.getName());
         setupList(street);
@@ -59,5 +68,10 @@ public class PlaceListActivity extends AppCompatActivity {
 
         placesViewPager.setAdapter(placeListFragmentPagerAdapter);
         tabLayout.setupWithViewPager(placesViewPager);
+    }
+
+    @Override
+    public void showPlace(Place place) {
+        intents.startPlaceActivity(this, place);
     }
 }

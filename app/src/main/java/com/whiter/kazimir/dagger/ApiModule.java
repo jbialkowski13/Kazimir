@@ -31,9 +31,9 @@ public class ApiModule {
     @Singleton
     OkHttpClient provideOkHttpClient() {
         OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.setConnectTimeout(1, TimeUnit.SECONDS);
-        okHttpClient.setReadTimeout(5, TimeUnit.SECONDS);
-        okHttpClient.setWriteTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setConnectTimeout(5, TimeUnit.SECONDS);
+        okHttpClient.setReadTimeout(15, TimeUnit.SECONDS);
+        okHttpClient.setWriteTimeout(15, TimeUnit.SECONDS);
         return okHttpClient;
     }
 

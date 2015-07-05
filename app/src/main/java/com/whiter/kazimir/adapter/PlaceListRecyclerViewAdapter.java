@@ -22,12 +22,22 @@ import butterknife.InjectView;
  */
 public class PlaceListRecyclerViewAdapter extends RecyclerView.Adapter<PlaceListRecyclerViewAdapter.ViewHolder> {
 
+    public interface ItemClickListener {
+        void onItemClick(int position);
+    }
+
     private List<Place> places;
     private Context context;
+
+    private ItemClickListener itemClickListener;
 
     public PlaceListRecyclerViewAdapter(List<Place> places, Context context) {
         this.places = places;
         this.context = context;
+    }
+
+    public void setItemClickListener(ItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     @Override
@@ -45,6 +55,9 @@ public class PlaceListRecyclerViewAdapter extends RecyclerView.Adapter<PlaceList
 
         String medium = place.getPhotos().get(0).getImages().getMedium();
         Glide.with(context).load(medium).into(holder.placeImage);
+
+        InternalClickListener internalClickListener = new InternalClickListener(position);
+        holder.placeImage.setOnClickListener(internalClickListener);
     }
 
     @Override
@@ -52,7 +65,7 @@ public class PlaceListRecyclerViewAdapter extends RecyclerView.Adapter<PlaceList
         return places.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder{
+    static class ViewHolder extends RecyclerView.ViewHolder {
 
         @InjectView(R.id.place_list_row_title)
         TextView placeName;
@@ -65,7 +78,32 @@ public class PlaceListRecyclerViewAdapter extends RecyclerView.Adapter<PlaceList
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this,itemView);
+            ButterKnife.inject(this, itemView);
+        }
+    }
+
+    private class InternalClickListener implements View.OnClickListener {
+
+        private static final int DEFAULT_POSITION = -1;
+        private int position = DEFAULT_POSITION;
+
+        public InternalClickListener(int position) {
+            this.position = position;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (DEFAULT_POSITION == position) {
+                return;
+            }
+            if (itemClickListener == null) {
+                return;
+            }
+            switch (v.getId()) {
+                case R.id.place_list_row_image:
+                    itemClickListener.onItemClick(position);
+                    break;
+            }
         }
     }
 

@@ -3,7 +3,6 @@ package com.whiter.kazimir.ui.fragment;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -23,7 +22,7 @@ import butterknife.InjectView;
 /**
  * Created by whiter
  */
-public class PlaceListFragment extends Fragment {
+public class PlaceListFragment extends BaseFragment<PlaceListFragment.Contract> implements PlaceListRecyclerViewAdapter.ItemClickListener {
 
     private static final String PLACES_TAG = "places";
 
@@ -32,7 +31,9 @@ public class PlaceListFragment extends Fragment {
 
     private List<Place> places = new ArrayList<>();
 
-    private PlaceListRecyclerViewAdapter placeListRecyclerViewAdapter;
+    public interface Contract {
+        void showPlace(Place place);
+    }
 
     public static PlaceListFragment newInstance(List<Place> places) {
         Bundle args = new Bundle();
@@ -54,7 +55,8 @@ public class PlaceListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         ButterKnife.inject(this, getView());
         placeListFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        placeListRecyclerViewAdapter = new PlaceListRecyclerViewAdapter(places,getActivity());
+        PlaceListRecyclerViewAdapter placeListRecyclerViewAdapter = new PlaceListRecyclerViewAdapter(places, getActivity());
+        placeListRecyclerViewAdapter.setItemClickListener(this);
         placeListFragmentRecyclerView.setAdapter(placeListRecyclerViewAdapter);
     }
 
@@ -63,7 +65,15 @@ public class PlaceListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         places.clear();
         List<Place> list = getArguments().getParcelableArrayList(PLACES_TAG);
-        places.addAll(list);
+        if (list != null) {
+            places.addAll(list);
+        }
+    }
 
+    @Override
+    public void onItemClick(int position) {
+        if (contract != null) {
+            contract.showPlace(places.get(position));
+        }
     }
 }
