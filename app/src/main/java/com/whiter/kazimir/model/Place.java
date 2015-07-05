@@ -52,8 +52,8 @@ public class Place implements Parcelable {
         return lastUpdated;
     }
 
-    public Details getDetails() {
-        return details;
+    public Detail getDetails() {
+        return details.getDetails();
     }
 
     public List<Photos> getPhotos() {

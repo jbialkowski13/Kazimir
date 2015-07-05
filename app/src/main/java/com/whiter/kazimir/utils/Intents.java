@@ -17,6 +17,7 @@ public class Intents {
 
     private static final String STREET_TAG = "street";
     private static final String PLACE_TAG = "place";
+    private static final String COORDINATES_PATH_STRING_TAG = "paths";
 
     public Intents() {
 
@@ -38,19 +39,25 @@ public class Intents {
         activity.finish();
     }
 
-    public void startPlaceActivity(Activity activity, Place place) {
+    public void startPlaceActivity(Activity activity, Place place, String coordinatesPath) {
         Intent intent = new Intent(activity, PlaceActivity.class);
         intent.putExtra(PLACE_TAG, place);
+        intent.putExtra(COORDINATES_PATH_STRING_TAG, coordinatesPath);
         activity.startActivity(intent);
+    }
+
+    public String getCoordinatesPathString(Intent intent) {
+        return intent.getStringExtra(COORDINATES_PATH_STRING_TAG);
     }
 
     public Place getPlace(Intent intent) {
         return intent.getParcelableExtra(PLACE_TAG);
     }
 
-    public void startMapActivity(Activity activity, Place place) {
+    public void startMapActivity(Activity activity, Place place, String coordinatesPath) {
         Intent intent = new Intent(activity, MapActivity.class);
         intent.putExtra(PLACE_TAG, place);
+        intent.putExtra(COORDINATES_PATH_STRING_TAG, coordinatesPath);
         activity.startActivity(intent);
     }
 }

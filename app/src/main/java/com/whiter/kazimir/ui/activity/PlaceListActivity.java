@@ -38,6 +38,7 @@ public class PlaceListActivity extends AppCompatActivity implements PlaceListFra
 
     @InjectView(R.id.place_list_view_pager)
     ViewPager placesViewPager;
+    private Street street;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,7 @@ public class PlaceListActivity extends AppCompatActivity implements PlaceListFra
                 onBackPressed();
             }
         });
-        Street street = intents.getStreet(getIntent());
+        street = intents.getStreet(getIntent());
         toolbar.setTitle(street.getName());
         setupList(street);
     }
@@ -72,6 +73,6 @@ public class PlaceListActivity extends AppCompatActivity implements PlaceListFra
 
     @Override
     public void showPlace(Place place) {
-        intents.startPlaceActivity(this, place);
+        intents.startPlaceActivity(this, place, street.getPathString());
     }
 }

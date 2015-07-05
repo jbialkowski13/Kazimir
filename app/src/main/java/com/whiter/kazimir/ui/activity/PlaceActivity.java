@@ -52,6 +52,7 @@ public class PlaceActivity extends AppCompatActivity {
     Toolbar toolbar;
 
     private Place place;
+    private String coordinatesPathString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class PlaceActivity extends AppCompatActivity {
             }
         });
         place = intents.getPlace(getIntent());
+        coordinatesPathString = intents.getCoordinatesPathString(getIntent());
         loadImages();
         loadDetails();
     }
@@ -79,14 +81,14 @@ public class PlaceActivity extends AppCompatActivity {
     }
 
     private void loadDetails() {
-        collapsingToolbarLayout.setTitle(place.getDetails().getDetails().getName());
-        placeName.setText(place.getDetails().getDetails().getName());
-        placeDescription.setText(place.getDetails().getDetails().getDescription());
+        collapsingToolbarLayout.setTitle(place.getDetails().getName());
+        placeName.setText(place.getDetails().getName());
+        placeDescription.setText(place.getDetails().getDescription());
     }
 
     @OnClick(R.id.show_on_map)
     public void showMap() {
-        intents.startMapActivity(this, place);
+        intents.startMapActivity(this, place, coordinatesPathString);
     }
 
 }

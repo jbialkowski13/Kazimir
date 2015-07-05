@@ -1,22 +1,42 @@
 package com.whiter.kazimir.ui.activity;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.whiter.kazimir.App;
 import com.whiter.kazimir.R;
+import com.whiter.kazimir.model.Coordinate;
+import com.whiter.kazimir.model.Place;
+import com.whiter.kazimir.utils.Intents;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
 
 public class MapActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
+    @Inject
+    Intents intents;
+    private String coordinatesPathString;
+    private Place place;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        App.component().inject(this);
+        coordinatesPathString = intents.getCoordinatesPathString(getIntent());
+        place = intents.getPlace(getIntent());
         setUpMapIfNeeded();
     }
 
@@ -61,6 +81,32 @@ public class MapActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        List<Coordinate> coordinates = parseCoordinates();
+        Coordinate markerCoordinate = coordinates.get(0);
+        PolylineOptions polylineOptions = new PolylineOptions();
+
+        for (Coordinate coordinate : coordinates) {
+            polylineOptions.add(new LatLng(coordinate.getLat(), coordinate.getLon()));
+        }
+        mMap.addPolyline(polylineOptions);
+        MarkerOptions marker = new MarkerOptions().position(new LatLng(markerCoordinate.getLat(), markerCoordinate.getLon())).title(place.getDetails().getName());
+        mMap.addMarker(marker);
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15);
+        mMap.moveCamera(cameraUpdate);
+    }
+
+    private List<Coordinate> parseCoordinates() {
+
+        List<Coordinate> coordinates = new ArrayList<>();
+        String[] coordinatesString = coordinatesPathString.split(";");
+
+        for (String coordinateS : coordinatesString) {
+            String[] split = coordinateS.split(",");
+            Coordinate coordinate = new Coordinate(Double.valueOf(split[0]), Double.valueOf(split[1]));
+            coordinates.add(coordinate);
+        }
+
+        return coordinates;
     }
 }
