@@ -6,11 +6,12 @@ import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by whiter
  */
-public class Place implements Parcelable{
+public class Place implements Parcelable {
 
     @SerializedName("id")
     private long id;
@@ -72,7 +73,7 @@ public class Place implements Parcelable{
         dest.writeTypedList(photos);
     }
 
-    public static class Details implements Parcelable{
+    public static class Details implements Parcelable {
         @SerializedName("en")
         private Detail detailEn;
 
@@ -104,6 +105,16 @@ public class Place implements Parcelable{
             return detailPl;
         }
 
+        public Detail getDetails() {
+            String language = Locale.getDefault().getLanguage();
+            switch (language) {
+                case "pl":
+                    return detailPl;
+                default:
+                    return detailEn;
+            }
+        }
+
         @Override
         public int describeContents() {
             return 0;
@@ -117,7 +128,7 @@ public class Place implements Parcelable{
     }
 
 
-    public static class Detail implements Parcelable{
+    public static class Detail implements Parcelable {
 
         @SerializedName("name")
         private String name;

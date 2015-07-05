@@ -40,8 +40,8 @@ public class PlaceListRecyclerViewAdapter extends RecyclerView.Adapter<PlaceList
     public void onBindViewHolder(ViewHolder holder, int position) {
         Place place = places.get(position);
 
-        holder.placeName.setText(place.getDetails().getDetailEn().getName());
-        holder.placeDescription.setText(place.getDetails().getDetailEn().getDescription());
+        holder.placeName.setText(place.getDetails().getDetails().getName());
+        holder.placeDescription.setText(place.getDetails().getDetails().getDescription());
 
         String medium = place.getPhotos().get(0).getImages().getMedium();
         Glide.with(context).load(medium).into(holder.placeImage);
