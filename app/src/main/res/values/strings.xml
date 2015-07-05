@@ -14,4 +14,5 @@
 
     <string name="map">Map</string>
     <string name="street_view">Street view</string>
+    <string name="title_activity_map">Map</string>
 </resources>

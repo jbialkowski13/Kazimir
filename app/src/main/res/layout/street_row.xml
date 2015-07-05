@@ -8,9 +8,7 @@
     <com.whiter.kazimir.ui.view.SplitImageView
         android:id="@+id/street_photo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:whiter_leftImage="@drawable/foto_placnowy"
-        app:whiter_rightImage="@drawable/foto_brzozowa"/>
+        android:layout_height="match_parent"/>
 
     <View
         android:layout_width="match_parent"

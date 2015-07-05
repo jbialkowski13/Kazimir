@@ -19,6 +19,7 @@ import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import me.relex.circleindicator.CircleIndicator;
 
 /**
@@ -83,5 +84,9 @@ public class PlaceActivity extends AppCompatActivity {
         placeDescription.setText(place.getDetails().getDetails().getDescription());
     }
 
+    @OnClick(R.id.show_on_map)
+    public void showMap() {
+        intents.startMapActivity(this, place);
+    }
 
 }

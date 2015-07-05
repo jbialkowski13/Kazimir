@@ -84,11 +84,12 @@
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/show_on_map"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:clickable="true"
-        android:src="@drawable/ic_done" />
+        android:src="@drawable/ic_map_white_18dp" />
 
 </android.support.design.widget.CoordinatorLayout>

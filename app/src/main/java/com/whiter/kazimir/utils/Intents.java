@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import com.whiter.kazimir.model.Place;
 import com.whiter.kazimir.model.Street;
+import com.whiter.kazimir.ui.activity.MapActivity;
 import com.whiter.kazimir.ui.activity.PlaceActivity;
 import com.whiter.kazimir.ui.activity.PlaceListActivity;
 import com.whiter.kazimir.ui.activity.StreetsActivity;
@@ -45,5 +46,11 @@ public class Intents {
 
     public Place getPlace(Intent intent) {
         return intent.getParcelableExtra(PLACE_TAG);
+    }
+
+    public void startMapActivity(Activity activity, Place place) {
+        Intent intent = new Intent(activity, MapActivity.class);
+        intent.putExtra(PLACE_TAG, place);
+        activity.startActivity(intent);
     }
 }
