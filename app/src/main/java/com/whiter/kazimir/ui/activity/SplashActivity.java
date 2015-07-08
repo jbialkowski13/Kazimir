@@ -57,6 +57,12 @@ public class SplashActivity extends AppCompatActivity implements SplashPresenter
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        splashPresenter.onDestroy();
+    }
+
+    @Override
     public void onDownloadedSuccess() {
         intents.startStreetsActivity(this);
     }

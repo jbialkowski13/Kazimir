@@ -20,4 +20,10 @@ public abstract class BasePresenter<T> {
     public T getContract() {
         return contract;
     }
+
+    public void onDestroy() {
+        releaseResources();
+    }
+
+    abstract void releaseResources();
 }

@@ -53,6 +53,11 @@ public class SplashPresenter extends BasePresenter<SplashPresenter.Contract> {
         bus.unregister(this);
     }
 
+    @Override
+    void releaseResources() {
+        this.downloadEvent = null;
+    }
+
     @Subscribe
     public void onDownloadEvent(DownloadEvent downloadEvent) {
         this.downloadEvent = downloadEvent;

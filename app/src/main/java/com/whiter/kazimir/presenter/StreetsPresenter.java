@@ -54,6 +54,12 @@ public class StreetsPresenter extends BasePresenter<StreetsPresenter.Contract> {
         bus.unregister(this);
     }
 
+
+    @Override
+    void releaseResources() {
+        this.streets = null;
+    }
+
     public void refresh() {
         ServiceCaller.refreshStreets(context);
     }

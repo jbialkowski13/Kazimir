@@ -107,6 +107,12 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        streetsPresenter.onDestroy();
+    }
+
+    @Override
     public void onRefresh() {
         streetsPresenter.refresh();
     }
