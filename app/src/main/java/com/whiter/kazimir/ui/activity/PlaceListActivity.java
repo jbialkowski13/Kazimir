@@ -75,4 +75,9 @@ public class PlaceListActivity extends AppCompatActivity implements PlaceListFra
     public void showPlace(Place place) {
         intents.startPlaceActivity(this, place, street.getPathString());
     }
+
+    @Override
+    public void showPlaceOnMap(Place place) {
+        intents.startMapActivity(this, place, street.getPathString());
+    }
 }

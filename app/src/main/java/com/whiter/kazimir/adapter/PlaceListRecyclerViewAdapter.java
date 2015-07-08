@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,8 @@ public class PlaceListRecyclerViewAdapter extends RecyclerView.Adapter<PlaceList
 
     public interface ItemClickListener {
         void onItemClick(int position);
+
+        void onShowOnMapClick(int position);
     }
 
     private List<Place> places;
@@ -56,8 +59,10 @@ public class PlaceListRecyclerViewAdapter extends RecyclerView.Adapter<PlaceList
         String medium = place.getPhotos().get(0).getImages().getMedium();
         Glide.with(context).load(medium).into(holder.placeImage);
 
-        InternalClickListener internalClickListener = new InternalClickListener(position);
-        holder.placeImage.setOnClickListener(internalClickListener);
+        holder.placeImage.setOnClickListener(new InternalClickListener(position));
+        holder.placeName.setOnClickListener(new InternalClickListener(position));
+        holder.placeDescription.setOnClickListener(new InternalClickListener(position));
+        holder.mapButton.setOnClickListener(new InternalClickListener(position));
     }
 
     @Override
@@ -69,12 +74,12 @@ public class PlaceListRecyclerViewAdapter extends RecyclerView.Adapter<PlaceList
 
         @InjectView(R.id.place_list_row_title)
         TextView placeName;
-
         @InjectView(R.id.place_list_row_image)
         ImageView placeImage;
-
         @InjectView(R.id.place_list_row_description)
         TextView placeDescription;
+        @InjectView(R.id.place_list_row_map)
+        Button mapButton;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -101,7 +106,12 @@ public class PlaceListRecyclerViewAdapter extends RecyclerView.Adapter<PlaceList
             }
             switch (v.getId()) {
                 case R.id.place_list_row_image:
+                case R.id.place_list_row_title:
+                case R.id.place_list_row_description:
                     itemClickListener.onItemClick(position);
+                    break;
+                case R.id.place_list_row_map:
+                    itemClickListener.onShowOnMapClick(position);
                     break;
             }
         }

@@ -33,6 +33,8 @@ public class PlaceListFragment extends BaseFragment<PlaceListFragment.Contract> 
 
     public interface Contract {
         void showPlace(Place place);
+
+        void showPlaceOnMap(Place place);
     }
 
     public static PlaceListFragment newInstance(List<Place> places) {
@@ -74,6 +76,13 @@ public class PlaceListFragment extends BaseFragment<PlaceListFragment.Contract> 
     public void onItemClick(int position) {
         if (contract != null) {
             contract.showPlace(places.get(position));
+        }
+    }
+
+    @Override
+    public void onShowOnMapClick(int position) {
+        if (contract != null) {
+            contract.showPlaceOnMap(places.get(position));
         }
     }
 }
