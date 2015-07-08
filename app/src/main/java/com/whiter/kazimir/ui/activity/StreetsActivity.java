@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -78,12 +77,6 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
         swipeRefreshLayout.setOnRefreshListener(this);
     }
 
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.sample_actions, menu);
-        return true;
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -97,6 +90,7 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
     @Override
     protected void onResume() {
         super.onResume();
+        navigationView.getMenu().getItem(0).setChecked(true);
         streetsPresenter.onResume(this);
     }
 
@@ -132,10 +126,22 @@ public class StreetsActivity extends AppCompatActivity implements SwipeRefreshLa
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        drawerLayout.closeDrawers();
+                        StreetsActivity.this.onNavigationItemSelected(menuItem);
                         return true;
                     }
                 });
+    }
+
+    private void onNavigationItemSelected(MenuItem menuItem) {
+        menuItem.setChecked(true);
+        if (R.id.nav_map == menuItem.getItemId()) {
+            goToMap();
+        }
+        drawerLayout.closeDrawers();
+    }
+
+
+    private void goToMap() {
+        intents.startMapActivity(this, streetsPresenter.getStreets());
     }
 }

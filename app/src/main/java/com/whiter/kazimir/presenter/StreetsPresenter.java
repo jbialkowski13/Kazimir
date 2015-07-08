@@ -79,6 +79,10 @@ public class StreetsPresenter extends BasePresenter<StreetsPresenter.Contract> {
         contract.setRefreshing(false);
     }
 
+    public List<Street> getStreets() {
+        return streets;
+    }
+
     private void setStreets(List<Street> streets) {
         if (streets == null) {
             return;

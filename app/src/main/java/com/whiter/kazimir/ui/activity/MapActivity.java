@@ -15,7 +15,9 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.whiter.kazimir.App;
 import com.whiter.kazimir.R;
 import com.whiter.kazimir.model.Coordinate;
+import com.whiter.kazimir.model.MapMode;
 import com.whiter.kazimir.model.Place;
+import com.whiter.kazimir.model.Street;
 import com.whiter.kazimir.utils.Intents;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity implements GoogleMap.OnMapClickListener {
 
     private GoogleMap map;
 
@@ -36,8 +38,8 @@ public class MapActivity extends AppCompatActivity {
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
 
-    private String coordinatesPathString;
-    private Place place;
+    private MapMode mapMode;
+    private List<LatLng> latLngs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,8 +47,7 @@ public class MapActivity extends AppCompatActivity {
         setContentView(R.layout.activity_map);
         App.component().inject(this);
         ButterKnife.inject(this);
-        coordinatesPathString = intents.getCoordinatesPathString(getIntent());
-        place = intents.getPlace(getIntent());
+        mapMode = intents.getMapMode(getIntent());
         setupToolbar();
         setUpMapIfNeeded();
     }
@@ -57,8 +58,22 @@ public class MapActivity extends AppCompatActivity {
         setUpMapIfNeeded();
     }
 
+    @Override
+    public void onMapClick(LatLng latLng) {
+        if (mapMode == MapMode.SINGLE_STREET) {
+            return;
+        }
+
+        if (latLngs == null) {
+            return;
+        }
+    }
+
+    private void findPoint(LatLng latLng) {
+        //todo
+    }
+
     private void setupToolbar() {
-        toolbar.setTitle(place.getDetails().getName());
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -69,33 +84,79 @@ public class MapActivity extends AppCompatActivity {
         });
     }
 
+    private void enterMode() {
+        switch (mapMode) {
+            case SINGLE_STREET:
+                enterSingleStreetMode();
+                break;
+            case ALL_STREET:
+                enterAllStreetsMode();
+                break;
+        }
+    }
+
+    private void enterSingleStreetMode() {
+        String coordinatesPathString = intents.getCoordinatesPathString(getIntent());
+        Place place = intents.getPlace(getIntent());
+        setUpSingleStreetMap(coordinatesPathString, place);
+    }
+
+    private void enterAllStreetsMode() {
+        List<Street> streets = intents.getStreets(getIntent());
+        setToolbarTitle(getString(R.string.map));
+        latLngs = null;
+        for (Street street : streets) {
+            latLngs = drawStreet(street.getPathString());
+        }
+        if (latLngs != null) {
+            MarkerOptions markerOptions = drawMarker(latLngs.get(0), null);
+            moveMapToMarker(markerOptions);
+        }
+    }
+
     private void setUpMapIfNeeded() {
         if (map == null) {
             map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
             if (map != null) {
-                setUpMap();
+                map.setOnMapClickListener(this);
+                enterMode();
             }
         }
     }
 
-    private void setUpMap() {
-        List<Coordinate> coordinates = parseCoordinates();
-        Coordinate markerCoordinate = coordinates.get(0);
-        PolylineOptions polylineOptions = new PolylineOptions();
+    private void setToolbarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
 
+    private void setUpSingleStreetMap(String coordinatesPathString, Place place) {
+        setToolbarTitle(place.getDetails().getName());
+        latLngs = drawStreet(coordinatesPathString);
+        MarkerOptions marker = drawMarker(latLngs.get(0), place.getDetails().getName());
+        moveMapToMarker(marker);
+    }
+
+    private void moveMapToMarker(MarkerOptions markerOptions) {
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(markerOptions.getPosition(), 15);
+        map.moveCamera(cameraUpdate);
+    }
+
+    private MarkerOptions drawMarker(LatLng latLng, String title) {
+        MarkerOptions marker = new MarkerOptions().position(latLng).title(title);
+        map.addMarker(marker);
+        return marker;
+    }
+
+    private List<LatLng> drawStreet(String coordinatesPathString) {
+        List<Coordinate> coordinates = parseCoordinates(coordinatesPathString);
+        PolylineOptions polylineOptions = new PolylineOptions();
         for (Coordinate coordinate : coordinates) {
             polylineOptions.add(new LatLng(coordinate.getLat(), coordinate.getLon()));
         }
         map.addPolyline(polylineOptions);
-        MarkerOptions marker = new MarkerOptions().position(new LatLng(markerCoordinate.getLat(), markerCoordinate.getLon())).title(place.getDetails().getName());
-        map.addMarker(marker);
-
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(marker.getPosition(), 15);
-        map.moveCamera(cameraUpdate);
+        return polylineOptions.getPoints();
     }
 
-    private List<Coordinate> parseCoordinates() {
-
+    private List<Coordinate> parseCoordinates(String coordinatesPathString) {
         List<Coordinate> coordinates = new ArrayList<>();
         String[] coordinatesString = coordinatesPathString.split(";");
 
