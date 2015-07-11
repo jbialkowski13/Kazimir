@@ -1,23 +1,21 @@
 package com.whiter.kazimir.ui.fragment;
 
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.whiter.kazimir.R;
 import com.whiter.kazimir.adapter.PlaceListRecyclerViewAdapter;
+import com.whiter.kazimir.databinding.PlaceListFragmentBinding;
 import com.whiter.kazimir.model.Place;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by whiter
@@ -26,10 +24,9 @@ public class PlaceListFragment extends BaseFragment<PlaceListFragment.Contract> 
 
     private static final String PLACES_TAG = "places";
 
-    @InjectView(R.id.place_list_recycler_view)
-    RecyclerView placeListFragmentRecyclerView;
 
     private List<Place> places = new ArrayList<>();
+    private PlaceListFragmentBinding placeListFragmentBinding;
 
     public interface Contract {
         void showPlace(Place place);
@@ -49,17 +46,18 @@ public class PlaceListFragment extends BaseFragment<PlaceListFragment.Contract> 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.place_list_fragment, container, false);
+        placeListFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.place_list_fragment, container, false);
+        return placeListFragmentBinding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ButterKnife.inject(this, getView());
-        placeListFragmentRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        placeListFragmentBinding = DataBindingUtil.getBinding(placeListFragmentBinding.getRoot());
+        placeListFragmentBinding.placeListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         PlaceListRecyclerViewAdapter placeListRecyclerViewAdapter = new PlaceListRecyclerViewAdapter(places, getActivity());
         placeListRecyclerViewAdapter.setItemClickListener(this);
-        placeListFragmentRecyclerView.setAdapter(placeListRecyclerViewAdapter);
+        placeListFragmentBinding.placeListRecyclerView.setAdapter(placeListRecyclerViewAdapter);
     }
 
     @Override
