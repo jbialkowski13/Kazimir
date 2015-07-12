@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="place" type="com.whiter.kazimir.viewmodel.PlaceViewModel" />
+            name="placeViewModel" type="com.whiter.kazimir.viewmodel.PlaceViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@android:style/TextAppearance.Large"
                     android:textColor="@color/primary_text_color"
-                    android:text="@{place.name}"
+                    android:text="@{placeViewModel.name}"
                     tools:text="PLAC NOWY" />
 
                 <TextView
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@android:style/TextAppearance.Medium"
                     android:textColor="@color/secondary_text_color"
-                    android:text="@{place.description}"
+                    android:text="@{placeViewModel.description}"
                     tools:text="PLAC NOWY CONTENT" />
 
 
@@ -66,7 +66,8 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleMarginEnd="64dp"
                 app:expandedTitleMarginStart="48dp"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:title="@{placeViewModel.name}">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -78,14 +79,16 @@
                     <android.support.v4.view.ViewPager
                         android:id="@+id/backdrop"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        app:adapter="@{placeViewModel.adapter}"/>
 
                     <me.relex.circleindicator.CircleIndicator
                         android:id="@+id/backdrop_indicator"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_marginBottom="8dp" />
+                        android:layout_marginBottom="8dp"
+                        app:viewPager="@{placeViewModel.viewPager}"/>
 
                 </RelativeLayout>
 
@@ -96,7 +99,8 @@
                     android:layout_height="?attr/actionBarSize"
                     app:layout_collapseMode="pin"
                     android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+                    app:navigationOnClickListener="@{placeViewModel.toolbarNavigationClickListener}"/>
 
 
             </android.support.design.widget.CollapsingToolbarLayout>

@@ -37,27 +37,28 @@ public class PlaceActivity extends AppCompatActivity {
         setSupportActionBar(placeActivityBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        placeActivityBinding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
         place = intents.getPlace(getIntent());
         coordinatesPathString = intents.getCoordinatesPathString(getIntent());
-        loadImages();
-        loadDetails();
+        setupViewBinding();
     }
 
-    private void loadImages() {
+    private void setupViewBinding() {
         PlaceImageViewPagerAdapter placeImageViewPagerAdapter = new PlaceImageViewPagerAdapter(getSupportFragmentManager(), place.getPhotos());
-        placeActivityBinding.backdrop.setAdapter(placeImageViewPagerAdapter);
-        placeActivityBinding.backdropIndicator.setViewPager(placeActivityBinding.backdrop);
-    }
 
-    private void loadDetails() {
-        placeActivityBinding.collapsingToolbar.setTitle(place.getDetails().getName());
-        placeActivityBinding.setPlace(PlaceViewModel.fromPlace(place));
+        PlaceViewModel placeViewModel = new PlaceViewModel.Builder()
+                .withName(place.getDetails().getName())
+                .withDescription(place.getDetails().getDescription())
+                .withPlaceImageViewAdapter(placeImageViewPagerAdapter)
+                .withViewPager(placeActivityBinding.backdrop)
+                .withToolbarNavigationClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                })
+                .build();
+
+        placeActivityBinding.setPlaceViewModel(placeViewModel);
     }
 
     @OnClick(R.id.show_on_map)
