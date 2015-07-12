@@ -17,15 +17,12 @@ public class PlaceViewModel extends BaseObservable {
     private final ViewPager viewPager;
     private final View.OnClickListener toolbarNavigationClickListener;
 
-    private PlaceViewModel(final String name, final String description,
-                           final PlaceImageViewPagerAdapter adapter,
-                           final ViewPager viewPager,
-                           final View.OnClickListener toolbarNavigationClickListener) {
-        this.name = name;
-        this.description = description;
-        this.adapter = adapter;
-        this.viewPager = viewPager;
-        this.toolbarNavigationClickListener = toolbarNavigationClickListener;
+    private PlaceViewModel(final Builder builder) {
+        this.name = builder.name;
+        this.description = builder.description;
+        this.adapter = builder.adapter;
+        this.viewPager = builder.viewPager;
+        this.toolbarNavigationClickListener = builder.toolbarNavigationClickListener;
     }
 
     public String getName() {
@@ -53,7 +50,7 @@ public class PlaceViewModel extends BaseObservable {
         private String name;
         private String description;
 
-        private PlaceImageViewPagerAdapter placeImageViewPagerAdapter;
+        private PlaceImageViewPagerAdapter adapter;
         private ViewPager viewPager;
         private View.OnClickListener toolbarNavigationClickListener;
 
@@ -68,7 +65,7 @@ public class PlaceViewModel extends BaseObservable {
         }
 
         public Builder withPlaceImageViewAdapter(PlaceImageViewPagerAdapter adapter) {
-            this.placeImageViewPagerAdapter = adapter;
+            this.adapter = adapter;
             return this;
         }
 
@@ -83,11 +80,7 @@ public class PlaceViewModel extends BaseObservable {
         }
 
         public PlaceViewModel build() {
-            return new PlaceViewModel(name,
-                    description,
-                    placeImageViewPagerAdapter,
-                    viewPager,
-                    toolbarNavigationClickListener);
+            return new PlaceViewModel(this);
         }
     }
 }

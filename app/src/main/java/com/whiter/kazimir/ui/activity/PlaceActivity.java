@@ -36,7 +36,6 @@ public class PlaceActivity extends AppCompatActivity {
         App.component().inject(this);
         setSupportActionBar(placeActivityBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         place = intents.getPlace(getIntent());
         coordinatesPathString = intents.getCoordinatesPathString(getIntent());
         setupViewBinding();

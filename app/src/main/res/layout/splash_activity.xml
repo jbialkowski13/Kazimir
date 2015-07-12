@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="android.view.View"/>
+        <variable
+            name="splashViewModel"
+            type="com.whiter.kazimir.viewmodel.SplashViewModel"/>
     </data>
 
     <RelativeLayout
@@ -46,7 +49,9 @@
                 app:mlpb_enable_circle_background="true"
                 app:mlpb_progress_color="@color/accent_color"
                 app:mlpb_progress_stoke_width="3dp"
-                app:mlpb_show_arrow="true" />
+                app:mlpb_show_arrow="true"
+                android:visibility="@{splashViewModel.splashError ? View.INVISIBLE : View.VISIBLE}"
+               />
 
             <LinearLayout
                 android:id="@+id/retry_section"
@@ -57,7 +62,8 @@
                 android:layout_marginTop="20dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
-                android:visibility="invisible">
+                android:visibility="@{splashViewModel.splashError ? View.VISIBLE : View.INVISIBLE}"
+                >
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -73,7 +79,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="@string/retry" />
+                    android:text="@string/retry"
+                    app:onClickListener="@{splashViewModel.retryListener}"/>
 
             </LinearLayout>
 

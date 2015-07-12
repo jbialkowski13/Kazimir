@@ -10,6 +10,7 @@ import com.whiter.kazimir.R;
 import com.whiter.kazimir.databinding.SplashActivityBinding;
 import com.whiter.kazimir.presenter.SplashPresenter;
 import com.whiter.kazimir.utils.Intents;
+import com.whiter.kazimir.viewmodel.SplashViewModel;
 
 import javax.inject.Inject;
 
@@ -27,13 +28,20 @@ public class SplashActivity extends AppCompatActivity implements SplashPresenter
     @Inject
     Intents intents;
 
-    private SplashActivityBinding splashActivityBinding;
-
+    private SplashViewModel splashViewModel = new SplashViewModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        splashActivityBinding = DataBindingUtil.setContentView(this, R.layout.splash_activity);
+        SplashActivityBinding splashActivityBinding = DataBindingUtil.setContentView(this, R.layout.splash_activity);
+        splashViewModel.setRetryListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                splashPresenter.downloadItems(true);
+                splashViewModel.setSplashError(false);
+            }
+        });
+        splashActivityBinding.setSplashViewModel(splashViewModel);
         App.component().inject(this);
     }
 
@@ -66,16 +74,8 @@ public class SplashActivity extends AppCompatActivity implements SplashPresenter
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                splashActivityBinding.splashProgress.setVisibility(View.INVISIBLE);
-                splashActivityBinding.retrySection.setVisibility(View.VISIBLE);
+                splashViewModel.setSplashError(true);
             }
         });
-    }
-
-    @OnClick(R.id.retry_button)
-    public void onRetryClicked() {
-        splashPresenter.downloadItems(true);
-        splashActivityBinding.splashProgress.setVisibility(View.VISIBLE);
-        splashActivityBinding.retrySection.setVisibility(View.INVISIBLE);
     }
 }

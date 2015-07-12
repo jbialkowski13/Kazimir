@@ -13,6 +13,7 @@ import com.whiter.kazimir.model.Place;
 import com.whiter.kazimir.model.Street;
 import com.whiter.kazimir.ui.fragment.PlaceListFragment;
 import com.whiter.kazimir.utils.Intents;
+import com.whiter.kazimir.viewmodel.PlaceListViewModel;
 
 import java.util.List;
 
@@ -36,18 +37,11 @@ public class PlaceListActivity extends AppCompatActivity implements PlaceListFra
         App.component().inject(this);
         setSupportActionBar(placeListActivityBinding.toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        placeListActivityBinding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
         street = intents.getStreet(getIntent());
-        placeListActivityBinding.toolbar.setTitle(street.getName());
-        setupList(street);
+        setupViewBinding();
     }
 
-    private void setupList(Street street) {
+    private void setupViewBinding() {
         List<Place> presentPlaces = street.getPlaces().getPresentPlaces();
         List<Place> pastPlaces = street.getPlaces().getPastPlaces();
 
@@ -55,8 +49,19 @@ public class PlaceListActivity extends AppCompatActivity implements PlaceListFra
         placeListFragmentPagerAdapter.addPlaceListFragment(PlaceListFragment.newInstance(pastPlaces), getString(R.string.past));
         placeListFragmentPagerAdapter.addPlaceListFragment(PlaceListFragment.newInstance(presentPlaces), getString(R.string.present));
 
-        placeListActivityBinding.placeListViewPager.setAdapter(placeListFragmentPagerAdapter);
-        placeListActivityBinding.tabs.setupWithViewPager(placeListActivityBinding.placeListViewPager);
+        PlaceListViewModel placeListViewModel = new PlaceListViewModel.Builder()
+                .withTitle(street.getName())
+                .withAdapter(placeListFragmentPagerAdapter)
+                .withViewPager(placeListActivityBinding.placeListViewPager)
+                .withToolbarNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onBackPressed();
+                    }
+                })
+                .build();
+
+        placeListActivityBinding.setPlaceListViewModel(placeListViewModel);
     }
 
     @Override

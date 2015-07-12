@@ -4,6 +4,10 @@
 
     <data>
 
+        <variable
+            name="placeListViewModel"
+            type="com.whiter.kazimir.viewmodel.PlaceListViewModel" />
+
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -22,14 +26,17 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Dark"
+                app:title="@{placeListViewModel.title}"
+                app:navigationOnClickListener="@{placeListViewModel.toolbarNavigationOnClickListener}"/>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:setupWithViewPager="@{placeListViewModel.viewPager}"/>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -37,7 +44,8 @@
             android:id="@+id/place_list_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:adapter="@{placeListViewModel.adapter}"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
